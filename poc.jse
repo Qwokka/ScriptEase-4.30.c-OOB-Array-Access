@@ -1,0 +1,33 @@
+var cursor = 0;
+
+function write(addr, value) {
+    cursor = addr;
+
+    a.putValue(value, 4, "unsigned");
+}
+
+function read(addr) {
+    cursor = addr;
+
+    return a.getValue(4, "unsigned")
+}
+
+var a = new Buffer();
+var data = a.data;
+
+a._get = function(prop) {
+    switch (prop) {
+        case "size":
+            return 0xffffffff;
+        case "cursor":
+            return cursor;
+        case "data":
+            return data;
+        case "bigEndian":
+            return false;
+        default:
+            return Buffer.prototype[prop];
+    }
+}
+
+read(0x41414141);
